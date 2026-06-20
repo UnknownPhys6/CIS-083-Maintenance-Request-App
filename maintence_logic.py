@@ -116,3 +116,13 @@ def save_tech_report(
         if conn.is_connected():
             cursor.close()
             conn.close()
+"""
+TODO – Technician Side Remaining Work
+-------------------------------------
+
+- Add endpoint to update request status (open, in_progress, completed, etc.)
+- Add endpoint to upload technician images (actual files, not just filenames)
+- Add any missing database columns needed for tech fields
+- Add error handling for invalid IDs or missing data
+- Connect these endpoints to the technician UI in React
+"""

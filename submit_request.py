@@ -105,3 +105,13 @@ async def submit_request(
         }
     }
 
+"""
+TODO – User Submission Side Remaining Work
+------------------------------------------
+
+- Add validation for missing fields (name, location, description, urgency)
+- Add better duplicate‑request detection if needed
+- Add endpoint to fetch user‑submitted images if the UI needs them
+- Add error handling for failed uploads or database issues
+- Connect this backend to the user-facing React form
+"""
