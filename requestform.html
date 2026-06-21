@@ -65,7 +65,7 @@
             <div id="desc-box" class="description-box"></div>
         </div>
         
-        <!--Updates and retieves catorgy description allowing the desription to change when a user selects or hovers over another category option-->
+        <!--Updates and retrieves catorgy description allowing the desription to change when a user selects or hovers over another category option-->
         <script>
             function updateDescription() {
                 const selectElement = document.getElementById('category-select');
@@ -84,9 +84,54 @@
             }
         </script>
 
-        <!--insert description here-->
-        <!--insert urgency meter here-->
-        <!--insert photo option here-->
+        <div class="form-group">
+            <label for="description">Describe the issue:</label>
+            <input type="text" id="description" name="description"><br>
+
+        </div>
+        
+        <!--Allows the user to choose the right value to describe how urgent the request it-->
+        <div class="form-group">
+        <label class="form-label">How urgent is this maintenance request?</label>
+        
+        <div class="urgency-container">
+            <label class="urgency-option">
+                <input type="radio" name="urgency" value="1" required>
+                <span class="scale-number">1</span>
+                <span class="urgency-label">Low / Cosmetic</span>
+            </label>
+
+            <label class="urgency-option">
+                <input type="radio" name="urgency" value="2">
+                <span class="scale-number">2</span>
+                <span class="urgency-label">Minor Repair</span>
+            </label>
+
+            <label class="urgency-option">
+                <input type="radio" name="urgency" value="3" checked>
+                <span class="scale-number">3</span>
+                <span class="urgency-label">Normal / Routine</span>
+            </label>
+
+            <label class="urgency-option">
+                <input type="radio" name="urgency" value="4">
+                <span class="scale-number">4</span>
+                <span class="urgency-label">High Priority</span>
+            </label>
+
+            <label class="urgency-option">
+                <input type="radio" name="urgency" value="5">
+                <span class="scale-number">5</span>
+                <span class="urgency-label">Emergency</span>
+            </label>
+        </div>
+
+        <!--This allows the user to upload a photo if they wish to-->
+        <div class="form-group">
+        <label for="maintenance-photo">Upload a photo of the issue (Optional):</label>
+        <div class="file-input-wrapper">
+            <input type="file" id="maintenance-photo" name="maintenance_photo" accept="image/*">
+        </div>
     </div>
 </body>
 </html>
