@@ -40,6 +40,7 @@
             </datalist>
         </div>
         
+        <!--Outside or Inside-->
         <div class="form-group">
             <label for="area-type-select">Is the maintenance requested inside or outside?</label>
             <input list="area-types" id="area-type-select" name="area_type" placeholder="Type or select..." required>
@@ -49,7 +50,8 @@
                 <option value="Outside">
             </datalist>
         </div>
-
+        
+        <!--User chooses maintenance category-->
         <div class="form-group">
             <label for="category-select">Select Maintenance Category:</label>
             
@@ -69,10 +71,11 @@
                 <option value="Custodial / Janitorial" title="Spills, messy areas, and restocking soap or paper towels.">Custodial / Janitorial</option>
                 <option value="Other / Unsure" title="Select if your issue doesn't fit neatly into the choices above.">Other / Unsure</option>
             </select>
-            
+            <!--Reveals a sort description when an item is hovered over-->
             <div id="desc-box" class="description-box"></div>
         </div>
         
+        <!--Changes the description when curser hovers or selects another option-->
         <script>
             function updateDescription() {
                 const selectElement = document.getElementById('category-select');
@@ -90,11 +93,13 @@
             }
         </script>
 
+        <!--User gives a description with other details regarding the request-->
         <div class="form-group">
             <label for="description">Describe the issue:</label>
             <input type="text" id="description" name="description" required>
         </div>
         
+        <!--User labels how urent the request is-->
         <div class="form-group">
             <label class="form-label">How urgent is this maintenance request?</label>
             
@@ -131,6 +136,7 @@
             </div>
         </div>
 
+        <!--User Photo upload-->
         <div class="form-group">
             <label for="maintenance-photo">Upload a photo of the issue (Optional):</label>
             <div class="file-input-wrapper">
@@ -138,6 +144,7 @@
             </div>
         </div>
 
+        <!--Submission-->
         <div class="form-group">
             <button type="submit" class="submit-btn">Submit Request</button>
         </div>
