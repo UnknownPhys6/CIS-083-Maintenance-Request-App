@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Maintenance System Homepage</title>
+</head>
+<body>
+    <h1>Maintenance Request Form</h1>
+    
+
+    <!--Start of Request form-->
+    <!--User can select or type location using the input selection with the locations ID-->
+    <div class="Form">
+        <div class="form-group">
+        <label for="location-select">Choose or type a campus location:</label>
+        <input list="locations" id="location-select" name="location" placeholder="Type to search...">
+        
+        <datalist id="locations">
+            <option value="Agriculture Land Lab">
+            <option value="Ag-Tech Building">
+            <option value="Board and Administration Center">
+            <option value="Foundation and Alumni Center">
+            <option value="Field House">
+            <option value="Judge Learning Resource Center">
+            <option value="Lensink Hall">
+            <option value="Luther Student Center">
+            <option value="Northeast Classroom Building">
+            <option value="Neal Hall">
+            <option value="Northwest Classroom Building">
+            <option value="Power House">
+            <option value="Physical Plant">
+            <option value="Recycling Center">
+            <option value="Storage Building 1">
+            <option value="Vo-Tech Building">
+            <option value="West Classroom Building">
+            <option value="Workforce Development Center">
+            <option value="Webb Hall">
+            <option value="Other/Unsure"
+        </datalist>
+        </div>
+
+        <!--User can select a category of maintenance-->
+        <div class="form-group">
+            <label for="category-select">Select Maintenance Category:</label>
+            
+            <select id="category-select" name="category" onchange="updateDescription()">
+                <option value="" disabled selected hidden>-- Choose a Category --</option>
+                <option value="HVAC/Climate Control" title="Heating, air conditioning, ventilation, thermostats, and air quality.">HVAC/Climate Control</option>
+                <option value="Plumbing" title="Leaks, clogged drains, toilets, sinks, and water fountains.">Plumbing</option>
+                <option value="Electrical" title="Outlets, light switches, breaker panels, and flickering lights.">Electrical</option>
+                <option value="Structural & Carpentry" title="Broken doors, windows, drywall damage, flooring, and ceiling tiles.">Structural & Carpentry</option>
+                <option value="Lock & Security" title="Keys, smart locks, badges, security cameras, and alarms.">Lock & Security</option>
+                <option value="Technical" title="IT hardware, internet connection, network ports, and smart classroom tech.">Technical</option>
+                <option value="Landscaping & Grounds" title="Lawn mowing, tree trimming, courtyard upkeep, and sprinklers.">Landscaping & Grounds</option>
+                <option value="Snow & Ice Removal" title="Salting sidewalks, shoveling pathways, and plowing parking areas.">Snow & Ice Removal</option>
+                <option value="Pest Control" title="Insects, rodents, wasps, or any unwanted wildlife sightings.">Pest Control</option>
+                <option value="Waste & Recycling" title="Overflowing trash bins, dumpster issues, and recycling pickup.">Waste & Recycling</option>
+                <option value="Safety & Fire Protection" title="Fire extinguishers, smoke alarms, emergency exits, and hazards.">Safety & Fire Protection</option>
+                <option value="Custodial / Janitorial" title="Spills, messy areas, and restocking soap or paper towels.">Custodial / Janitorial</option>
+                <option value="Other / Unsure" title="Select if your issue doesn't fit neatly into the choices above.">Other / Unsure</option>
+            </select>
+            
+            <!--Allows a description box to appear when a user's cursor hovers over a category option-->
+            <div id="desc-box" class="description-box"></div>
+        </div>
+        
+        <!--Updates and retieves catorgy description allowing the desription to change when a user selects or hovers over another category option-->
+        <script>
+            function updateDescription() {
+                const selectElement = document.getElementById('category-select');
+                const descBox = document.getElementById('desc-box');
+                
+                // Get the title (description) of the currently selected option
+                const selectedOption = selectElement.options[selectElement.selectedIndex];
+                const description = selectedOption.getAttribute('title');
+
+                if (description) {
+                    descBox.textContent = description;
+                    descBox.style.display = 'block'; // Reveal the box
+                } else {
+                    descBox.style.display = 'none';  // Hide if placeholder is picked
+                }
+            }
+        </script>
+
+        <!--insert description here-->
+        <!--insert urgency meter here-->
+        <!--insert photo option here-->
+    </div>
+</body>
+</html>
