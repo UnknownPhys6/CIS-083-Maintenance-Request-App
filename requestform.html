@@ -11,40 +11,49 @@
 
     <!--Start of Request form-->
     <!--User can select or type location using the input selection with the locations ID-->
-    <div class="Form">
+    <form>
         <div class="form-group">
-        <label for="location-select">Choose or type a campus location:</label>
-        <input list="locations" id="location-select" name="location" placeholder="Type to search...">
+            <label for="location-select">Choose or type a campus location:</label>
+            <input list="locations" id="location-select" name="location" placeholder="Type to search..." required>
+            
+            <datalist id="locations">
+                <option value="Agriculture Land Lab">
+                <option value="Ag-Tech Building">
+                <option value="Board and Administration Center">
+                <option value="Foundation and Alumni Center">
+                <option value="Field House">
+                <option value="Judge Learning Resource Center">
+                <option value="Lensink Hall">
+                <option value="Luther Student Center">
+                <option value="Northeast Classroom Building">
+                <option value="Neal Hall">
+                <option value="Northwest Classroom Building">
+                <option value="Power House">
+                <option value="Physical Plant">
+                <option value="Recycling Center">
+                <option value="Storage Building 1">
+                <option value="Vo-Tech Building">
+                <option value="West Classroom Building">
+                <option value="Workforce Development Center">
+                <option value="Webb Hall">
+                <option value="Other/Unsure">
+            </datalist>
+        </div>
         
-        <datalist id="locations">
-            <option value="Agriculture Land Lab">
-            <option value="Ag-Tech Building">
-            <option value="Board and Administration Center">
-            <option value="Foundation and Alumni Center">
-            <option value="Field House">
-            <option value="Judge Learning Resource Center">
-            <option value="Lensink Hall">
-            <option value="Luther Student Center">
-            <option value="Northeast Classroom Building">
-            <option value="Neal Hall">
-            <option value="Northwest Classroom Building">
-            <option value="Power House">
-            <option value="Physical Plant">
-            <option value="Recycling Center">
-            <option value="Storage Building 1">
-            <option value="Vo-Tech Building">
-            <option value="West Classroom Building">
-            <option value="Workforce Development Center">
-            <option value="Webb Hall">
-            <option value="Other/Unsure"
-        </datalist>
+        <div class="form-group">
+            <label for="area-type-select">Is the maintenance requested inside or outside?</label>
+            <input list="area-types" id="area-type-select" name="area_type" placeholder="Type or select..." required>
+            
+            <datalist id="area-types">
+                <option value="Inside">
+                <option value="Outside">
+            </datalist>
         </div>
 
-        <!--User can select a category of maintenance-->
         <div class="form-group">
             <label for="category-select">Select Maintenance Category:</label>
             
-            <select id="category-select" name="category" onchange="updateDescription()">
+            <select id="category-select" name="category" onchange="updateDescription()" required>
                 <option value="" disabled selected hidden>-- Choose a Category --</option>
                 <option value="HVAC/Climate Control" title="Heating, air conditioning, ventilation, thermostats, and air quality.">HVAC/Climate Control</option>
                 <option value="Plumbing" title="Leaks, clogged drains, toilets, sinks, and water fountains.">Plumbing</option>
@@ -61,77 +70,77 @@
                 <option value="Other / Unsure" title="Select if your issue doesn't fit neatly into the choices above.">Other / Unsure</option>
             </select>
             
-            <!--Allows a description box to appear when a user's cursor hovers over a category option-->
             <div id="desc-box" class="description-box"></div>
         </div>
         
-        <!--Updates and retrieves catorgy description allowing the desription to change when a user selects or hovers over another category option-->
         <script>
             function updateDescription() {
                 const selectElement = document.getElementById('category-select');
                 const descBox = document.getElementById('desc-box');
                 
-                // Get the title (description) of the currently selected option
                 const selectedOption = selectElement.options[selectElement.selectedIndex];
                 const description = selectedOption.getAttribute('title');
 
                 if (description) {
                     descBox.textContent = description;
-                    descBox.style.display = 'block'; // Reveal the box
+                    descBox.style.display = 'block';
                 } else {
-                    descBox.style.display = 'none';  // Hide if placeholder is picked
+                    descBox.style.display = 'none';
                 }
             }
         </script>
 
         <div class="form-group">
             <label for="description">Describe the issue:</label>
-            <input type="text" id="description" name="description"><br>
-
+            <input type="text" id="description" name="description" required>
         </div>
         
-        <!--Allows the user to choose the right value to describe how urgent the request it-->
         <div class="form-group">
-        <label class="form-label">How urgent is this maintenance request?</label>
-        
-        <div class="urgency-container">
-            <label class="urgency-option">
-                <input type="radio" name="urgency" value="1" required>
-                <span class="scale-number">1</span>
-                <span class="urgency-label">Low / Cosmetic</span>
-            </label>
+            <label class="form-label">How urgent is this maintenance request?</label>
+            
+            <div class="urgency-container">
+                <label class="urgency-option">
+                    <input type="radio" name="urgency" value="1" required>
+                    <span class="scale-number">1</span>
+                    <span class="urgency-label">Low / Cosmetic</span>
+                </label>
 
-            <label class="urgency-option">
-                <input type="radio" name="urgency" value="2">
-                <span class="scale-number">2</span>
-                <span class="urgency-label">Minor Repair</span>
-            </label>
+                <label class="urgency-option">
+                    <input type="radio" name="urgency" value="2">
+                    <span class="scale-number">2</span>
+                    <span class="urgency-label">Minor Repair</span>
+                </label>
 
-            <label class="urgency-option">
-                <input type="radio" name="urgency" value="3" checked>
-                <span class="scale-number">3</span>
-                <span class="urgency-label">Normal / Routine</span>
-            </label>
+                <label class="urgency-option">
+                    <input type="radio" name="urgency" value="3" checked>
+                    <span class="scale-number">3</span>
+                    <span class="urgency-label">Normal / Routine</span>
+                </label>
 
-            <label class="urgency-option">
-                <input type="radio" name="urgency" value="4">
-                <span class="scale-number">4</span>
-                <span class="urgency-label">High Priority</span>
-            </label>
+                <label class="urgency-option">
+                    <input type="radio" name="urgency" value="4">
+                    <span class="scale-number">4</span>
+                    <span class="urgency-label">High Priority</span>
+                </label>
 
-            <label class="urgency-option">
-                <input type="radio" name="urgency" value="5">
-                <span class="scale-number">5</span>
-                <span class="urgency-label">Emergency</span>
-            </label>
+                <label class="urgency-option">
+                    <input type="radio" name="urgency" value="5">
+                    <span class="scale-number">5</span>
+                    <span class="urgency-label">Emergency</span>
+                </label>
+            </div>
         </div>
 
-        <!--This allows the user to upload a photo if they wish to-->
         <div class="form-group">
-        <label for="maintenance-photo">Upload a photo of the issue (Optional):</label>
-        <div class="file-input-wrapper">
-            <input type="file" id="maintenance-photo" name="maintenance_photo" accept="image/*">
+            <label for="maintenance-photo">Upload a photo of the issue (Optional):</label>
+            <div class="file-input-wrapper">
+                <input type="file" id="maintenance-photo" name="maintenance_photo" accept="image/*">
+            </div>
         </div>
-    </div>
+
+        <div class="form-group">
+            <button type="submit" class="submit-btn">Submit Request</button>
+        </div>
+    </form>
 </body>
 </html>
