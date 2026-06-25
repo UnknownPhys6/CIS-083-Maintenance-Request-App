@@ -4,8 +4,6 @@ from pydantic import BaseModel
 import uvicorn
 
 app = FastAPI()
-
-
 @app.get("/")
 def root():
     return {"message": "API is running"}
@@ -76,6 +74,7 @@ def update_request(request_id: int, req: UpdateRequest):
         raise HTTPException(status_code=400, detail="No fields provided for update")
 
     values.append(request_id)
+
     sql = f"""
         UPDATE requests
         SET {", ".join(fields)}
@@ -90,7 +89,6 @@ def update_request(request_id: int, req: UpdateRequest):
 
     return {"success": True}
 
-
-# This block allows you to run the file directly using 'python api.py'
+# Added the execution block with public host binding for port forwarding
 if __name__ == "__main__":
     uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
