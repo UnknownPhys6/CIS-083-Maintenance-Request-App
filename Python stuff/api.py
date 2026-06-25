@@ -1,11 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import db
 from pydantic import BaseModel
+import uvicorn
 
 app = FastAPI()
+
+
 @app.get("/")
 def root():
     return {"message": "API is running"}
+
 
 @app.get("/maintenance_requests")
 def read_requests():
@@ -17,7 +21,6 @@ def read_requests():
 
     cursor.close()
     cnx.close()
-
     return rows
 
 
@@ -26,6 +29,7 @@ class MaintenanceRequest(BaseModel):
     requestDesc: str
     requestLocation: str
     active: bool
+
 
 @app.post("/maintenance_requests")
 def create_request(req: MaintenanceRequest):
@@ -41,24 +45,37 @@ def create_request(req: MaintenanceRequest):
     cnx.commit()
     cursor.close()
     cnx.close()
+    return {"success": True, "message": "Request created successfully"}
 
 
 class UpdateRequest(BaseModel):
     requestDesc: str | None = None
-    active: int | None = None
+    active: bool | None = None  # Changed int to bool to match standard schema
+
 
 @app.put("/maintenance_requests/{request_id}")
 def update_request(request_id: int, req: UpdateRequest):
     cnx = db.get_connection()
     cursor = cnx.cursor()
+
     fields = []
     values = []
+
+    # Safely handle both potential update fields
+    if req.requestDesc is not None:
+        fields.append("requestDesc = %s")
+        values.append(req.requestDesc)
+
     if req.active is not None:
         fields.append("active = %s")
         values.append(req.active)
 
-    values.append(request_id)
+    if not fields:
+        cursor.close()
+        cnx.close()
+        raise HTTPException(status_code=400, detail="No fields provided for update")
 
+    values.append(request_id)
     sql = f"""
         UPDATE requests
         SET {", ".join(fields)}
@@ -73,3 +90,7 @@ def update_request(request_id: int, req: UpdateRequest):
 
     return {"success": True}
 
+
+# This block allows you to run the file directly using 'python api.py'
+if __name__ == "__main__":
+    uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
