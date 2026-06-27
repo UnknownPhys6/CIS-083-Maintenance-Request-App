@@ -76,7 +76,7 @@ async def submit_request(
             raise HTTPException(status_code=400, detail="Request already exists")
 
         cursor.execute(
-            "INSERT INTO maintenance_requests (name, location, area_type, category, description, urgency, images) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            "INSERT INTO maintenance_requests (name, location, type, category, description, urgency, images) VALUES (%s, %s, %s, %s, %s, %s, %s)",
             (name, location, area_type, category, description, urgency, ",".join(saved_files))
         )
         conn.commit()
@@ -93,7 +93,7 @@ async def submit_request(
         "data": {
             "name": name,
             "location": location,
-            "area_type": area_type,
+            "type": area_type,
             "category": category,
             "description": description,
             "urgency": urgency,
