@@ -1,3 +1,4 @@
+#this file is just for importing myqsl connector and linking in the .env file for easier use later.
 import mysql.connector
 import os
 from dotenv import load_dotenv
