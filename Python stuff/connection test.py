@@ -1,3 +1,7 @@
+"""
+This file is just used for testing locally.
+I know its bad practice to post login credentials to the internet, I'll change it to use .env files later
+"""
 import mysql.connector
 
 cnx = mysql.connector.connect(
