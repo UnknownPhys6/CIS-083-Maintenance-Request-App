@@ -3,12 +3,16 @@ import db
 from pydantic import BaseModel
 import uvicorn
 
+#sets a root endpoint to display a message if running
 app = FastAPI()
 @app.get("/")
 def root():
     return {"message": "API is running"}
 
 
+
+#sets /maintenance_requests endpoint.
+#It just returns every row of the database in JSON format.
 @app.get("/maintenance_requests")
 def read_requests():
     cnx = db.get_connection()
@@ -22,12 +26,12 @@ def read_requests():
     return rows
 
 
+#sets /maintenance_requests endpoint to accept post requests
 class MaintenanceRequest(BaseModel):
     requestType: str
     requestDesc: str
     requestLocation: str
     active: bool
-
 
 @app.post("/maintenance_requests")
 def create_request(req: MaintenanceRequest):
@@ -46,10 +50,10 @@ def create_request(req: MaintenanceRequest):
     return {"success": True, "message": "Request created successfully"}
 
 
+#creates endpoint for put requests, to allow altering of requests.
 class UpdateRequest(BaseModel):
     requestDesc: str | None = None
     active: bool | None = None  # Changed int to bool to match standard schema
-
 
 @app.put("/maintenance_requests/{request_id}")
 def update_request(request_id: int, req: UpdateRequest):
