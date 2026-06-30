@@ -12,7 +12,7 @@ into the main FastAPI application.
 """
 
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form
-from typing import List
+from typing import List, Optional
 import os
 import mysql.connector
 
@@ -120,7 +120,7 @@ async def submit_request(
     category: str = Form(...),
     description: str = Form(...),
     urgency: str = Form(...),
-    images: List[UploadFile] | None = File(None),
+    images: Optional[List[UploadFile]] | None = File(None),
 ):
     """
     Receives a maintenance request from the frontend form.

@@ -5,3 +5,19 @@
 /.vs
 /.github
 /.env
+# Python
+backend/venv/
+backend/__pycache__/
+*.pyc
+
+# Node / React
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Environment files
+.env
+
+# OS junk
+.DS_Store
+Thumbs.db

@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export default function MaintenanceForm() {
+  const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [areaType, setAreaType] = useState("");
   const [category, setCategory] = useState("");
   const [categoryDesc, setCategoryDesc] = useState("");
   const [description, setDescription] = useState("");
   const [urgency, setUrgency] = useState("3");
-  const [photo, setPhoto] = useState(null);
+  const [images, setImages] = useState(null);
 
   const handleCategoryChange = (e) => {
     const option = e.target.selectedOptions[0];
@@ -20,15 +21,19 @@ export default function MaintenanceForm() {
     e.preventDefault();
 
     const formData = new FormData();
+    formData.append("name", name);
     formData.append("location", location);
     formData.append("area_type", areaType);
     formData.append("category", category);
     formData.append("description", description);
     formData.append("urgency", urgency);
-    photos.forEach(p => {
-    if (p instanceof File) formData.append("images", p);
-});
-
+   if (images && images.length > 0) {
+    images.forEach((image) => {
+      if (image instanceof File) {
+        formData.append("images", image);
+      }
+    });
+  }
 
     await axios.post("http://localhost:8000/submit", formData, {
       headers: { "Content-Type": "multipart/form-data" }
@@ -42,7 +47,20 @@ export default function MaintenanceForm() {
       <h1>Maintenance Request Form</h1>
 
       <form onSubmit={handleSubmit}>
-        
+        {/* Name */}
+        <div className="form-group">
+          <label htmlFor="name-input">Your Name:</label>
+          <input
+            type="text"
+            id="name-input"
+            name="name"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+
         {/* Location */}
         <div className="form-group">
           <label htmlFor="location-select">Choose or type a campus location:</label>
@@ -200,7 +218,7 @@ export default function MaintenanceForm() {
             type="file"
             id="maintenance-photo"
             accept="image/*"
-            onChange={(e) => setPhoto(e.target.files[0])}
+            onChange={(e) => setImages([...e.target.files])}
           />
         </div>
 

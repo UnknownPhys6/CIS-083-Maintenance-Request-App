@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./frontend/Login";
-import MaintenanceForm from "./frontend/MaintenanceForm";
-import Admin from "./frontend/Admin";
+import Login from "./Login";
+import MaintenanceForm from "./MaintenanceForm";
+import Admin from "./Admin";
 import {Link} from "react-router-dom";
 
 
@@ -11,8 +11,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<MaintenanceForm />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/maintenance" element={<Admin />} />
+        <Route path="/login" element={<Login />} /> 
+        <Route path="/maintenance" element={<Admin />} /> 
       </Routes>
     </Router>
   );
