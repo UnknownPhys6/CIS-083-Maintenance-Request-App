@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
-import MaintenanceForm from "./components/MaintenanceForm";
-import Admin from "./components/Admin";
+import Login from "./frontend/Login";
+import MaintenanceForm from "./frontend/MaintenanceForm";
+import Admin from "./frontend/Admin";
 import {Link} from "react-router-dom";
 
 
