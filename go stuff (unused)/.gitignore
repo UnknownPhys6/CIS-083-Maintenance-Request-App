@@ -1,8 +1,0 @@
-# Ignore compiled executables
-*.exe
-*.exe~
-cis083-api
-build.exe
-
-# Ignore GoLand internal settings
-.idea/

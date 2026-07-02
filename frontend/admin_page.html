@@ -1,0 +1,50 @@
+<div>
+  <meta charSet="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maintenance Admin Dashboard</title>
+  {/*This builds the visual header/navigation bad of the webpage.*/}
+  <header>
+    <h1>Maintenance<span> Admin</span></h1>
+    <div>
+      <span>Welcome, [Insert User]</span>
+      <div>
+        FL //First letters of first and last name
+      </div>
+    </div>
+  </header>
+  {/*This section acts as a real-time analytics bar, giving the admin an at-a-glance view of their operations.*/}
+  <main>
+    <section>
+      <div>
+        <p>Total Requests</p>
+        <p>[Insert number of requests]</p>
+      </div>
+    </section>
+    {/*This is the core of the dashboard where the admin views, filters, and manages active maintenance requests.*/}
+    <div>
+      <section>
+        <div>
+          <h2>Maintenance Tickets</h2>
+          <div>
+            <select>
+              <option value="all">All Statuses</option>
+              <option value="Unassigned">Unassigned</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th className="p-4">Ticket / Location</th>
+                <th className="p-4">Priority</th>
+                <th className="p-4">Assigned To</th>
+                <th className="p-4">Status &amp; Progress</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </section>
+    </div></main></div>

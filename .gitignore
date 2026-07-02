@@ -5,6 +5,7 @@
 /.vs
 /.github
 /.env
+/.idea
 # Python
 backend/venv/
 backend/__pycache__/
