@@ -4,10 +4,21 @@ import db
 
 router = APIRouter()
 
+class RequestSearchFilters(BaseModel):
+    active: bool | None = None
+    urgency: int | None = None
+    request_type: str | None = None
+    assigned_to: str | None = None
+    location: str | None = None
+    sort_by: str = "id"
+    order: str = "asc"
+    limit: int = 50
+    offset: int = 0
+
 class MaintenanceResponse(BaseModel):
     id: int
     type: str
-    urgency: str
+    urgency: int
     description: str
     location: str
     images: str | None = None
@@ -30,20 +41,107 @@ class UpdateRequest(BaseModel):
     techComments: str | None = None
     urgency: str | None = None
 
+"""
+Returns maintenance requests with optional filtering, sorting, paging.
+Here are some examples:
+GET /requests?active=true
+GET /requests?active=true&request_type=Electrical
+GET /requests?sort_by=urgency&order=desc
+GET /requests?limit=20&offset=40
+"""
+@router.get("/requests")
+def get_requests(
+    active: bool | None = Query(None),
+    urgency: int | None = Query(None),
+    request_type: str | None = Query(None),
+    assigned_to: str | None = Query(None),
+    location: str | None = Query(None),
+    sort_by: str = Query("id"),
+    order: str = Query("asc"),
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0)
+):
+    sql, values = build_request_query(
+        active,
+        urgency,
+        request_type,
+        assigned_to,
+        location,
+        sort_by,
+        order,
+        limit,
+        offset
+    )
+    cnx = db.get_connection()
+    cursor = cnx.cursor(dictionary=True)
+    cursor.execute(sql, tuple(values))
+    rows = cursor.fetchall()
+    cursor.close()
+    cnx.close()
+    return rows
+def build_request_query(
+    active,
+    urgency,
+    request_type,
+    assigned_to,
+    location,
+    sort_by,
+    order,
+    limit,
+    offset
+):
+    sql = "SELECT * FROM requests"
+    conditions = []
+    values = []
 
-@router.get("/get_maintenance_requests", response_model=list[MaintenanceResponse])
-def read_requests():
-    try:
-        cnx = db.get_connection()
-        cursor = cnx.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM requests")
-        rows = cursor.fetchall()
-        cursor.close()
-        cnx.close()
-        return rows
-    except Exception as e:
-        print(e)
-        raise
+    # Filters
+    if active is not None:
+        conditions.append("active = %s")
+        values.append(active)
+    if urgency is not None:
+        conditions.append("urgency = %s")
+        values.append(urgency)
+    if request_type:
+        conditions.append("type = %s")
+        values.append(request_type)
+    if assigned_to:
+        conditions.append("assignedTo = %s")
+        values.append(assigned_to)
+    if location:
+        conditions.append("location = %s")
+        values.append(location)
+    if conditions:
+        sql += " WHERE " + " AND ".join(conditions)
+
+    # Sorting
+    allowed_sort_columns = {
+        "id",
+        "type",
+        "urgency",
+        "description",
+        "location",
+        "assignedTo",
+        "active"
+    }
+    if sort_by not in allowed_sort_columns:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Cannot sort by '{sort_by}'."
+        )
+    order = order.lower()
+    if order not in ("asc", "desc"):
+        raise HTTPException(
+            status_code=400,
+            detail="Order must be 'asc' or 'desc'."
+        )
+    sql += f" ORDER BY {sort_by} {order.upper()}"
+
+    # Pagination
+    sql += " LIMIT %s OFFSET %s"
+    values.append(limit)
+    values.append(offset)
+    return sql, values
+
 
 @router.post("/create_maintenance_requests")
 def create_request(req: CreateMaintenanceRequest):
