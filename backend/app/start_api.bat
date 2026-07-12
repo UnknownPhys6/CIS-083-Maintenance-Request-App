@@ -7,7 +7,8 @@ echo.
 
 call .venv\Scripts\activate
 
-python -m uvicorn api:app --reload
+start "Backend" cmd /k python -m uvicorn api:app --reload
+start "ngrok" cmd /k ngrok http 8000
 
 echo.
 echo Backend stopped.
