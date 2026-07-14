@@ -143,7 +143,7 @@ def build_request_query(
     return sql, values
 
 
-@router.post("/create_maintenance_requests")
+@router.post("/create_maintenance_request")
 def create_request(req: CreateMaintenanceRequest):
     try:  
         cnx = db.get_connection()
