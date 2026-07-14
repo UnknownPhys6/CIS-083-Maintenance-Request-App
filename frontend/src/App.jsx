@@ -19,8 +19,8 @@ function App() {
 }
 export function Navbar() {
   return (
-    <nav style={{ padding: "10px", background: "#eee" }}>
-      <Link to="/" style={{ marginRight: "20px" }}>Submit Request</Link>
+    <nav className= "nav">
+      <Link to="/">Submit Request</Link>
       <Link to="/login">Maintenance Login</Link>
     </nav>
   );
