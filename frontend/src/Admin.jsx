@@ -43,6 +43,15 @@ export default function MaintenanceForm() {
       <h1>Maintenance Request Form</h1>
 
       <form onSubmit={handleSubmit}>
+         {/* Active Requests Scroll Box */}
+        <div className="active-requests-container">
+          <h2>Active Requests</h2>
+
+          <div className="active-requests-scroll">
+            {}
+            <p>Loading active requests...</p>
+          </div>
+        </div>
         
         {/* Location */}
         <div className="form-group">
