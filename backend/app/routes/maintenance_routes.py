@@ -22,8 +22,8 @@ class MaintenanceResponse(BaseModel):
     description: str
     location: str
     images: str | None = None
-    assignedTo: str | None = None
-    techComments: str | None = None
+    assigned_to: str | None = None
+    tech_comments: str | None = None
     active: bool
 
 class CreateMaintenanceRequest(BaseModel):
@@ -37,8 +37,8 @@ class CreateMaintenanceRequest(BaseModel):
 class UpdateRequest(BaseModel):
     description: str | None = None
     active: bool | None = None
-    assignedTo: str | None = None
-    techComments: str | None = None
+    assigned_to: str | None = None
+    tech_comments: str | None = None
     urgency: str | None = None
 
 """
@@ -49,8 +49,9 @@ GET /requests?active=true&request_type=Electrical
 GET /requests?sort_by=urgency&order=desc
 GET /requests?limit=20&offset=40
 """
-@router.get("/requests")
+@router.get("/get_requests")
 def get_requests(
+    id: int | None = Query(None),
     active: bool | None = Query(None),
     urgency: int | None = Query(None),
     request_type: str | None = Query(None),
@@ -62,6 +63,7 @@ def get_requests(
     offset: int = Query(0, ge=0)
 ):
     sql, values = build_request_query(
+        id,
         active,
         urgency,
         request_type,
@@ -80,6 +82,7 @@ def get_requests(
     cnx.close()
     return rows
 def build_request_query(
+    id,
     active,
     urgency,
     request_type,
@@ -95,6 +98,9 @@ def build_request_query(
     values = []
 
     # Filters
+    if id is not None:
+        conditions.append("id = %s")
+        values.append(id)
     if active is not None:
         conditions.append("active = %s")
         values.append(active)
@@ -102,10 +108,10 @@ def build_request_query(
         conditions.append("urgency = %s")
         values.append(urgency)
     if request_type:
-        conditions.append("type = %s")
+        conditions.append("request_type = %s")
         values.append(request_type)
     if assigned_to:
-        conditions.append("assignedTo = %s")
+        conditions.append("assigned_to = %s")
         values.append(assigned_to)
     if location:
         conditions.append("location = %s")
@@ -120,7 +126,7 @@ def build_request_query(
         "urgency",
         "description",
         "location",
-        "assignedTo",
+        "assigned_to",
         "active"
     }
     if sort_by not in allowed_sort_columns:
@@ -136,6 +142,9 @@ def build_request_query(
         )
     sql += f" ORDER BY {sort_by} {order.upper()}"
 
+    if id is not None:
+        limit = 1
+    
     # Pagination
     sql += " LIMIT %s OFFSET %s"
     values.append(limit)
@@ -156,14 +165,19 @@ def create_request(req: CreateMaintenanceRequest):
             (req.type, req.urgency, req.description, req.location, req.images, req.active),
         )
         cnx.commit()
+        request_id = cursor.lastrowid
         cursor.close()
         cnx.close()
-        return {"success": True, "message": "Request created successfully"}
+        return {
+            "success": True,
+            "message": "Request created successfully",
+            "request_id": request_id
+        }
     except Exception as e:
         print(e)
         raise
 
-@router.put("/alter_maintenance_requests/{request_id}")
+@router.put("/alter_request/{request_id}")
 def update_request(request_id: int, req: UpdateRequest):
     cnx = db.get_connection()
     cursor = cnx.cursor()
@@ -178,13 +192,13 @@ def update_request(request_id: int, req: UpdateRequest):
         fields.append("active = %s")
         values.append(req.active)
 
-    if req.assignedTo is not None:
-        fields.append("assignedTo = %s")
-        values.append(req.assignedTo)
+    if req.assigned_to is not None:
+        fields.append("assigned_to = %s")
+        values.append(req.assigned_to)
 
-    if req.techComments is not None:
-        fields.append("techComments = %s")
-        values.append(req.techComments)
+    if req.tech_comments is not None:
+        fields.append("tech_comments = %s")
+        values.append(req.tech_comments)
 
     if req.urgency is not None:
         fields.append("urgency = %s")
