@@ -1,17 +1,4 @@
-f"""
-login.py
----------
-This module provides a simple authentication system using FastAPI.
 
-It includes:
-- A login endpoint that validates credentials
-- A lightweight in‑memory session store
-- A dependency that checks whether a request is authenticated
-- An endpoint to verify active authentication status
-
-This is NOT a production‑grade auth system.
-It is intentionally simple for classroom or prototype use.
-"""
 
 from fastapi import APIRouter, HTTPException, Form, Header, Depends
 import secrets

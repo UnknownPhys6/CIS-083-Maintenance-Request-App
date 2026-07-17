@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
-
+import {local} from "./App"
 export default function MaintenanceForm() {
-  const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [areaType, setAreaType] = useState("");
   const [category, setCategory] = useState("");
@@ -10,6 +8,7 @@ export default function MaintenanceForm() {
   const [description, setDescription] = useState("");
   const [urgency, setUrgency] = useState("3");
   const [images, setImages] = useState(null);
+  const [requestId, setRequestId] = useState("");
 
   const handleCategoryChange = (e) => {
     const option = e.target.selectedOptions[0];
@@ -17,11 +16,14 @@ export default function MaintenanceForm() {
     setCategoryDesc(option.title || "");
   };
 
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("name", name);
     formData.append("location", location);
     formData.append("area_type", areaType);
     formData.append("category", category);
@@ -35,31 +37,21 @@ export default function MaintenanceForm() {
     });
   }
 
-    await axios.post("http://localhost:8000/submit", formData, {
-      headers: { "Content-Type": "multipart/form-data" }
-    });
-
-    alert("Request submitted");
-  };
+        await local.post("/submit", formData, {
+          headers: { "Content-Type": "multipart/form-data" }
+        });
+        setRequestId(response.data.request_id);
+        alert("Request submitted");
+      };
+  
 
   return (
     <div className="form-container">
       <h1>Maintenance Request Form</h1>
 
       <form onSubmit={handleSubmit}>
-        {/* Name */}
-        <div className="form-group">
-          <label htmlFor="name-input">Your Name:</label>
-          <input
-            type="text"
-            id="name-input"
-            name="name"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
+
+       
 
         {/* Location */}
         <div className="form-group">
@@ -227,6 +219,14 @@ export default function MaintenanceForm() {
           <button type="submit" className="submit-btn">
             Submit Request
           </button>
+        </div>
+        {/*ID*/}
+
+       <div className="form-group">
+        <label htmlFor="request-id">Request ID:</label>
+        <output id="request-id" name="request-id">
+         {requestId}
+        </output>
         </div>
       </form>
     </div>

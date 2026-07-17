@@ -1,33 +1,64 @@
-<div>
-  <><meta charSet="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Campus Maintenance System</title><h1>Lake Land College</h1><h2>
-    <ul className="nav-links"> {/*Add Links*/}
-      <li><a href="#">Home</a></li>
-      <li><a href="#">Request Form</a></li>
-      <li><a href="#">Staff Login</a></li>
-      <li><a href="#">Contacts</a></li>
-    </ul>
-  </h2></>
-  {/*Needs backend code to allow updates to the tickets*/}
-  <div className="maint-tag">
-    <div className="maint-header">
-      <span className="maint-id">[Insert Ticket ID]</span> {/*TBD, Yes or No?*/}
-      {/* Progress States can be: pending (tag will not show in mainpage), in-progress, or completed (will show completed for one day before removed)*/}
-      <span className="status-badge in-progress">[Insert State of Progress]</span>
-    </div>
-    <div className="maint-body">
-      <h3 className="maint-title">[Insert Title of Tag]</h3>
-      <p className="maint-location">[Insert Location]</p>
-      <p className="maint-desc">[Insert Discription of issue]</p>
-    </div>
-    <div className="maint-footer">
-      <div>
-        <span className="maint-assign-label">Assigned To</span>
-        <span>[Insert Assigned Staff]</span>
+import React, { useState } from "react";
+import { local } from "./App";
+
+export default function Home() {
+  const [requestID, setRequestID] = useState("");
+  const [activeRequests, setActiveRequests] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  async function getRequest(e) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await local.get(`/get_maintenance_request_by_id/${requestID}`);
+      setActiveRequests([response.data]); 
+    } catch (error) {
+      console.error("Error fetching request details:", error);
+      setActiveRequests([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div>
+      <form onSubmit={getRequest}>
+        <h2>Campus Maintenance System</h2>
+        <div className="maint-tag">
+          <div className="maint-header">
+            <label htmlFor="requestID">Enter request ID:</label>
+            <input
+              type="text"
+              id="requestID"
+              name="requestID"
+              value={requestID}
+              onChange={(e) => setRequestID(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <button type="submit" className="submit-btn">
+              Find Request
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div className="active-requests-scroll">
+        {loading && <p>Loading...</p>}
+        {!loading && activeRequests.length === 0 && <p>No active requests found.</p>}
+
+        {activeRequests.map((request) => (
+          <div key={request.id} className="active-request">
+            <p><strong>Location:</strong> {request.location}</p>
+            <p><strong>Area Type:</strong> {request.area_type}</p>
+            <p><strong>Category:</strong> {request.category}</p>
+            <p><strong>Description:</strong> {request.description}</p>
+            <p><strong>Urgency:</strong> {request.urgency}</p>
+            <p><strong>Stage:</strong> {request.stage}</p>
+          </div>
+        ))}
       </div>
-      <div>
-        <span className="maint-meta-label">Last Updated</span>
-        <span>[Insert Time Stamp]</span>
-      </div>
     </div>
-  </div>
-</div>
+  );
+}

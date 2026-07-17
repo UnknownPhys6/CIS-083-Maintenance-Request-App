@@ -1,17 +1,4 @@
-"""
-main.py
---------
-This is the central FastAPI application file.
 
-Its responsibilities:
-- Initialize the FastAPI app
-- Configure global middleware (CORS)
-- Register all route modules (routers)
-- Provide a simple health-check endpoint
-
-This file acts as the "entry point" for the backend.
-All feature-specific routes live in separate modules and are included here.
-"""
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,14 +7,16 @@ from fastapi.middleware.cors import CORSMiddleware
 # Each router contains its own endpoints and logic.
 from .submit_request import router as submit_router
 from .login import router as auth_router
-
+from .maintence_logic import router as maintenance_router
+from .db_connect import engine, Base
+from .model import MaintenanceRequest
 # ------------------------------------------------------------
 # FastAPI Application Initialization
 # ------------------------------------------------------------
 # This creates the main FastAPI app instance.
 # All middleware, routers, and configuration attach to this object.
 app = FastAPI()
-
+Base.metadata.create_all(bind=engine)
 # ------------------------------------------------------------
 # CORS Configuration
 # ------------------------------------------------------------
@@ -54,7 +43,7 @@ app.add_middleware(
 # This keeps the backend clean, organized, and scalable.
 app.include_router(submit_router)   # Public routes (submit request, fetch users)
 app.include_router(auth_router)     # Authentication routes (login, token check)
-
+app.include_router(maintenance_router)  # Maintenance logic routes
 # ------------------------------------------------------------
 # Health Check Endpoint
 # ------------------------------------------------------------

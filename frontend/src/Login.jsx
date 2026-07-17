@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { local } from "./App";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -11,21 +11,17 @@ export default function Login() {
     const formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
-
-    const res = await fetch("http://127.0.0.1:8000/auth/login", {
-      method: "POST",
-      body: formData
+    try {
+    const res = await local.post("/auth/login", formData, {
+      headers: { "Content-Type": "multipart/form-data" }
     });
 
-    if (res.ok) {
-      const data = await res.json();
-      localStorage.setItem("token", data.token);
-      window.location.href = "/maintenance";
-    } else {
-      setError("Invalid username or password");
-    }
+    localStorage.setItem("token", res.data.token);
+    window.location.href = "/maintenance";
+  } catch (err) {
+    setError("Invalid username or password");
   }
-
+}
   return (
     <div>
       <h1>Maintenance Login</h1>

@@ -192,7 +192,7 @@ input[type="radio"]:checked {
 }
 
 .nav a {
-  color: #ffffff;          
+  color: #f40606;          
   text-decoration: none;
   font-weight: 600;
   padding: 10px 16px;
@@ -200,7 +200,7 @@ input[type="radio"]:checked {
 }
 
 .nav a:hover {
-  color: #C90022;     
+  color: #1f0797;     
 }
 
 @media (max-width: 600px) {
