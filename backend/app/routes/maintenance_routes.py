@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 import db
 
@@ -7,7 +7,7 @@ router = APIRouter()
 class RequestSearchFilters(BaseModel):
     active: bool | None = None
     urgency: int | None = None
-    request_type: str | None = None
+    type: str | None = None
     assigned_to: str | None = None
     location: str | None = None
     sort_by: str = "id"
@@ -54,7 +54,7 @@ def get_requests(
     id: int | None = Query(None),
     active: bool | None = Query(None),
     urgency: int | None = Query(None),
-    request_type: str | None = Query(None),
+    type: str | None = Query(None),
     assigned_to: str | None = Query(None),
     location: str | None = Query(None),
     sort_by: str = Query("id"),
@@ -66,7 +66,7 @@ def get_requests(
         id,
         active,
         urgency,
-        request_type,
+        type,
         assigned_to,
         location,
         sort_by,
@@ -85,7 +85,7 @@ def build_request_query(
     id,
     active,
     urgency,
-    request_type,
+    type,
     assigned_to,
     location,
     sort_by,
@@ -107,9 +107,9 @@ def build_request_query(
     if urgency is not None:
         conditions.append("urgency = %s")
         values.append(urgency)
-    if request_type:
-        conditions.append("request_type = %s")
-        values.append(request_type)
+    if type:
+        conditions.append("type = %s")
+        values.append(type)
     if assigned_to:
         conditions.append("assigned_to = %s")
         values.append(assigned_to)
@@ -126,7 +126,7 @@ def build_request_query(
         "urgency",
         "description",
         "location",
-        "assigned_to",
+        "assigned_To",
         "active"
     }
     if sort_by not in allowed_sort_columns:
@@ -144,7 +144,7 @@ def build_request_query(
 
     if id is not None:
         limit = 1
-    
+
     # Pagination
     sql += " LIMIT %s OFFSET %s"
     values.append(limit)
