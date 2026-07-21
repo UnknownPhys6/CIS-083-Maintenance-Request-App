@@ -1,57 +1,50 @@
 import React, { useState } from "react";
 import {local} from "./App"
 export default function MaintenanceForm() {
-  const [location, setLocation] = useState("");
-  const [areaType, setAreaType] = useState("");
-  const [category, setCategory] = useState("");
-  const [categoryDesc, setCategoryDesc] = useState("");
-  const [description, setDescription] = useState("");
-  const [urgency, setUrgency] = useState("3");
-  const [images, setImages] = useState(null);
-  const [requestId, setRequestId] = useState("");
+	const [location, setLocation] = useState("");
+	const [type, setType] = useState("");
+	//const [category, setCategory] = useState("");
+	//const [categoryDesc, setCategoryDesc] = useState("");
+	const [categoryDesc, setCategoryDesc] = useState("");
+	const [description, setDescription] = useState("");
+	const [urgency, setUrgency] = useState("3");
+	const [images, setImages] = useState(null);
+	const [requestId, setRequestId] = useState("");
+	const [currentDate, setCurrentDate] = useState(new Date());
 
-  const handleCategoryChange = (e) => {
-    const option = e.target.selectedOptions[0];
-    setCategory(option.value);
-    setCategoryDesc(option.title || "");
-  };
+/*
+	const handleCategoryChange = (e) => {
+		const option = e.target.selectedOptions[0];
+		setCategory(option.value);
+		setCategoryDesc(option.title || "");
+	};
+*/
 
-  const [currentDate, setCurrentDate] = useState(new Date());
+	const handleSubmit = async (e) => {
+	  e.preventDefault();
 
+	  try {
+		const response = await local.post("/create_maintenance_request", {
+		  location: location,
+		  type: type,
+		  description: description,
+		  urgency: Number(urgency)
+		});
 
+		setRequestId(response.data.request_id);
+		alert("Request submitted");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+	  } catch (err) {
+		console.error(err);
+		console.log(err.response?.data);
+	  }
+	};
 
-    const formData = new FormData();
-    formData.append("location", location);
-    formData.append("area_type", areaType);
-    formData.append("category", category);
-    formData.append("description", description);
-    formData.append("urgency", urgency);
-   if (images && images.length > 0) {
-    images.forEach((image) => {
-      if (image instanceof File) {
-        formData.append("images", image);
-      }
-    });
-  }
+	return (
+		<div className="form-container">
+		<h1>Maintenance Request Form</h1>
 
-        await local.post("/submit", formData, {
-          headers: { "Content-Type": "multipart/form-data" }
-        });
-        setRequestId(response.data.request_id);
-        alert("Request submitted");
-      };
-  
-
-  return (
-    <div className="form-container">
-      <h1>Maintenance Request Form</h1>
-
-      <form onSubmit={handleSubmit}>
-
-       
+		<form onSubmit={handleSubmit}>
 
         {/* Location */}
         <div className="form-group">
@@ -96,10 +89,10 @@ export default function MaintenanceForm() {
           <input
             list="area-types"
             id="area-type-select"
-            name="area_type"
+            name="type"
             placeholder="Type or select..."
-            value={areaType}
-            onChange={(e) => setAreaType(e.target.value)}
+            value={type}
+            onChange={(e) => setType(e.target.value)}
             required
           />
 
@@ -109,7 +102,8 @@ export default function MaintenanceForm() {
           </datalist>
         </div>
 
-        {/* Category */}
+		{/*
+        {/* Category 
         <div className="form-group">
           <label htmlFor="category-select">Select Maintenance Category:</label>
 
@@ -169,6 +163,22 @@ export default function MaintenanceForm() {
             <div className="description-box">{categoryDesc}</div>
           )}
         </div>
+		*/}
+
+        {/* Description */}
+        <div className="form-group">
+          <label htmlFor="description">Describe the issue:</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+        </div>
+
+
 
         {/* Description */}
         <div className="form-group">
