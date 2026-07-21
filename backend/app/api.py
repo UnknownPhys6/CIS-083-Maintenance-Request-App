@@ -2,9 +2,7 @@
 from fastapi import FastAPI, HTTPException
 from routes.maintenance_routes import router as maintenance_router
 from fastapi.middleware.cors import CORSMiddleware
-from .submit_request import router as submit_router
 from .login import router as auth_router
-from .maintence_logic import router as maintenance_router
 app = FastAPI()
 app.include_router(maintenance_router)
 app.include_router(auth_router)
