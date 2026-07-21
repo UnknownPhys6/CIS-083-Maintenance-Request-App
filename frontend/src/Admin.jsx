@@ -87,7 +87,7 @@ const filteredRequests = activeRequests.filter((request) => {
       {!loading && filteredRequests.length === 0 && <p>No active requests found.</p>}
 
       {filteredRequests.map((request) => (
-        <div key={request.id} className="active-request">
+        <div key={request.id} className="active-request" data-category={request.category}>
           <p><strong>Location:</strong> {request.location}</p>
           <p><strong>Area Type:</strong> {request.area_type}</p>
           <p><strong>Category:</strong> {request.category}</p>
