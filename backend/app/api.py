@@ -7,7 +7,7 @@ from .login import router as auth_router
 from .maintence_logic import router as maintenance_router
 app = FastAPI()
 app.include_router(maintenance_router)
-
+app.include_router(auth_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],          # Allow all origins (React dev server, etc.)
