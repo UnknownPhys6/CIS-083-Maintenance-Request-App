@@ -1,25 +1,31 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from typing import List, Optional
-from sqlalchemy.orm import Session
 import os
+from pydantic import BaseModel
 
-from .db_connect import SessionLocal
-from .model import MaintenanceRequest
-from .schemas import SubmitResponse
+
 
 router = APIRouter()
 
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-
+'''
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-
+'''
+class CreateMaintenanceRequest(BaseModel):
+    urgency: str
+    type: str
+    category: str
+    description: str
+    location: str
+    images: str | None = None
+    active: bool
 
 # ------------------------------------------------------------
 # Duplicate Request Detection
@@ -45,7 +51,7 @@ async def submit_request(
     description: str = Form(...),
     urgency: str = Form(...),
     images: Optional[List[UploadFile]] = File(None),
-    db: Session = Depends(get_db),
+    #db: Session = Depends(get_db),
 ):
     # ------------------------------------------------------------
     # Duplicate check — query existing requests at this location

@@ -1,11 +1,8 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Depends
 from typing import List, Optional
-from sqlalchemy.orm import Session
+
 import os
 
-from .db_connect import SessionLocal
-from .model import MaintenanceRequest
-from .schemas import MaintenanceRequestOut  
 
 router = APIRouter()
 
