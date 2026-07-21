@@ -27,19 +27,19 @@ class MaintenanceResponse(BaseModel):
     active: bool
 
 class CreateMaintenanceRequest(BaseModel):
-    urgency: str
+    urgency: int
     type: str
     description: str
     location: str
     images: str | None = None
-    active: bool
+    active: bool = True
 
 class UpdateRequest(BaseModel):
     description: str | None = None
     active: bool | None = None
     assigned_to: str | None = None
     tech_comments: str | None = None
-    urgency: str | None = None
+    urgency: int | None = None
 
 """
 Returns maintenance requests with optional filtering, sorting, paging.
