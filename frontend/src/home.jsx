@@ -59,6 +59,7 @@ export default function Home() {
           </div>
         ))}
       </div>
+      <div className="logo-container"></div>
     </div>
   );
 }
