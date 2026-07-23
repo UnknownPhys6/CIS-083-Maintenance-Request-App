@@ -1,31 +1,25 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from typing import List, Optional
+from sqlalchemy.orm import Session
 import os
-from pydantic import BaseModel
 
-
+from .db import SessionLocal
+from .model import MaintenanceRequest
+from .schemas import SubmitResponse
 
 router = APIRouter()
 
-UPLOAD_DIR = "uploads"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-'''
+upload_dir = "uploads"
+os.makedirs(upload_dir, exist_ok=True)
+
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-'''
-class CreateMaintenanceRequest(BaseModel):
-    urgency: str
-    type: str
-    category: str
-    description: str
-    location: str
-    images: str | None = None
-    active: bool
+
 
 # ------------------------------------------------------------
 # Duplicate Request Detection
@@ -35,7 +29,7 @@ def is_similar(description: str, existing_descriptions: List[str]) -> bool:
     for old in existing_descriptions:
         old_words = set(old.lower().split())
         overlap = description_words & old_words
-        if len(overlap) > 3:
+        if len(overlap) > 6:
             return True
     return False
 
@@ -46,12 +40,11 @@ def is_similar(description: str, existing_descriptions: List[str]) -> bool:
 @router.post("/submit", response_model=SubmitResponse)
 async def submit_request(
     location: str = Form(...),
-    area_type: str = Form(...),
     category: str = Form(...),
     description: str = Form(...),
     urgency: str = Form(...),
     images: Optional[List[UploadFile]] = File(None),
-    #db: Session = Depends(get_db),
+    db: Session = Depends(get_db),
 ):
     # ------------------------------------------------------------
     # Duplicate check — query existing requests at this location
@@ -60,7 +53,7 @@ async def submit_request(
         MaintenanceRequest.location == location
     ).all()
     existing_descriptions = [r.description for r in existing]
-
+    
     if is_similar(description, existing_descriptions):
         raise HTTPException(status_code=400, detail="Request already exists")
 
@@ -71,7 +64,7 @@ async def submit_request(
     if images:
         for img in images:
             contents = await img.read()
-            file_path = os.path.join(UPLOAD_DIR, img.filename)
+            file_path = os.path.join(upload_dir, img.filename)
             with open(file_path, "wb") as f:
                 f.write(contents)
             saved_filenames.append(img.filename)
@@ -81,7 +74,6 @@ async def submit_request(
     # ------------------------------------------------------------
     new_request = MaintenanceRequest(
         location=location,
-        area_type=area_type,
         category=category,
         description=description,
         urgency=urgency,

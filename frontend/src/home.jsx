@@ -56,6 +56,19 @@ export default function Home() {
             <p><strong>Description:</strong> {request.description}</p>
             <p><strong>Urgency:</strong> {request.urgency}</p>
             <p><strong>Stage:</strong> {request.stage}</p>
+            {request.images && (
+          <div>
+            <strong>Photos:</strong>
+            {request.images.split(",").map((filename) => (
+            <img
+              key={filename}
+              src={`http://localhost:8000/uploads/${filename.trim()}`}
+               alt="Maintenance photo"
+              style={{ maxWidth: "200px", margin: "5px", display: "block" }}
+                            />
+            ))}
+          </div>
+)}
           </div>
         ))}
       </div>

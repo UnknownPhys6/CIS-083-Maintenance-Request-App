@@ -2,48 +2,50 @@ import React, { useState } from "react";
 import {local} from "./App"
 export default function MaintenanceForm() {
 	const [location, setLocation] = useState("");
-	const [type, setType] = useState("");
-	//const [category, setCategory] = useState("");
-	//const [categoryDesc, setCategoryDesc] = useState("");
+	const [category, setCategory] = useState("");
 	const [categoryDesc, setCategoryDesc] = useState("");
 	const [description, setDescription] = useState("");
 	const [urgency, setUrgency] = useState("3");
 	const [images, setImages] = useState(null);
 	const [requestId, setRequestId] = useState("");
 	const [currentDate, setCurrentDate] = useState(new Date());
-
-/*
+  const [successMessage, setSuccessMessage] = useState("");
 	const handleCategoryChange = (e) => {
 		const option = e.target.selectedOptions[0];
 		setCategory(option.value);
 		setCategoryDesc(option.title || "");
 	};
-*/
+
 
 	const handleSubmit = async (e) => {
-	  e.preventDefault();
-
-	  try {
-		const response = await local.post("/create_maintenance_request", {
-		  location: location,
-		  type: type,
-		  description: description,
-		  urgency: Number(urgency)
-		});
-
-		setRequestId(response.data.request_id);
-		alert("Request submitted");
-
-	  } catch (err) {
-		console.error(err);
-		console.log(err.response?.data);
-	  }
-	};
-
+      e.preventDefault();
+  
+      const formData = new FormData();
+      formData.append("location", location);
+      formData.append("category", category);
+      formData.append("description", description);
+      formData.append("urgency", urgency);
+     if (images && images.length > 0) {
+      images.forEach((image) => {
+        if (image instanceof File) {
+          formData.append("images", image);
+        }
+      });
+    }
+  
+       
+        
+    const response = await local.post("/submit", formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+          });
+          setRequestId(response.data.request_id);
+          setSuccessMessage("Request submitted successfully!");
+          setTimeout(() => setSuccessMessage(""), 3000);
+        };
 	return (
 		<div className="form-container">
 		<h1>Maintenance Request Form</h1>
-
+    {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
 		<form onSubmit={handleSubmit}>
 
         {/* Location */}
@@ -83,27 +85,10 @@ export default function MaintenanceForm() {
           </datalist>
         </div>
 
-        {/* Inside / Outside */}
-        <div className="form-group">
-          <label htmlFor="area-type-select">Is the maintenance inside or outside?</label>
-          <input
-            list="area-types"
-            id="area-type-select"
-            name="type"
-            placeholder="Type or select..."
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            required
-          />
+      
 
-          <datalist id="area-types">
-            <option value="Inside" />
-            <option value="Outside" />
-          </datalist>
-        </div>
-
-		{/*
-        {/* Category 
+		
+        {/* Category */}
         <div className="form-group">
           <label htmlFor="category-select">Select Maintenance Category:</label>
 
@@ -163,23 +148,7 @@ export default function MaintenanceForm() {
             <div className="description-box">{categoryDesc}</div>
           )}
         </div>
-		*/}
-
-        {/* Description */}
-        <div className="form-group">
-          <label htmlFor="description">Describe the issue:</label>
-          <input
-            type="text"
-            id="description"
-            name="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
-
-
-
+		
         {/* Description */}
         <div className="form-group">
           <label htmlFor="description">Describe the issue:</label>
@@ -232,12 +201,7 @@ export default function MaintenanceForm() {
         </div>
         {/*ID*/}
 
-       <div className="form-group">
-        <label htmlFor="request-id">Request ID:</label>
-        <output id="request-id" name="request-id">
-         {requestId}
-        </output>
-        </div>
+       <output id="request-id">{requestId ? `Your request ID is: ${requestId}` : ""}</output>
       </form>
     </div>
   );

@@ -29,11 +29,8 @@ export function Navbar() {
 }
 
 export const local = axios.create({
-  baseURL: "https://setup-divinely-recess.ngrok-free.dev"
+  baseURL: "http://localhost:8000"
 });
 
-export const db = axios.create({
-   baseURL: "http://setup-divinely-recess.ngrok-free.dev",
-  headers: { "ngrok-skip-browser-warning": "true" },
-});
+
 export default App;

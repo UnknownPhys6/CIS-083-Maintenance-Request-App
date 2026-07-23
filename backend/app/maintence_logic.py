@@ -1,7 +1,12 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Depends
 from typing import List, Optional
+from .schemas import CreateMaintenanceRequest
+from sqlalchemy.orm import Session
+from .db import SessionLocal
 
 import os
+
+from .model import MaintenanceRequest
 
 
 router = APIRouter()
@@ -18,7 +23,7 @@ def get_db():
         db.close()
 
 
-@router.get("/get_maintenance_request_by_id/{id}", response_model=MaintenanceRequestOut)
+@router.get("/get_maintenance_request_by_id/{id}", response_model=CreateMaintenanceRequest)
 async def get_single_request(id: int, db: Session = Depends(get_db)):
     request = db.query(MaintenanceRequest).filter(MaintenanceRequest.id == id).first()
     if request is None:
@@ -26,7 +31,7 @@ async def get_single_request(id: int, db: Session = Depends(get_db)):
     return request
 
 
-@router.put("/request/{id}", response_model=MaintenanceRequestOut)
+@router.put("/request/{id}", response_model=CreateMaintenanceRequest)
 async def save_tech_report(
     id: int,
     tech_description: str = Form(...),
@@ -59,11 +64,8 @@ async def save_tech_report(
     return request
 
 
-@router.get("/requests", response_model=List[MaintenanceRequestOut])
+@router.get("/requests", response_model=List[CreateMaintenanceRequest])
 async def get_all_reports(db: Session = Depends(get_db)):
-    return db.query(MaintenanceRequest).filter(MaintenanceRequest.active == True).all()
+    return db.query(MaintenanceRequest).all()
 
 
-@router.get("/completed-requests", response_model=List[MaintenanceRequestOut])
-async def get_completed_requests(db: Session = Depends(get_db)):
-    return db.query(MaintenanceRequest).filter(MaintenanceRequest.active == False).all()
