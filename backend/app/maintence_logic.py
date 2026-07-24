@@ -69,3 +69,23 @@ async def get_all_reports(db: Session = Depends(get_db)):
     return db.query(MaintenanceRequest).all()
 
 
+@router.delete("/delete_maintenance_request/{id}")
+async def delete_maintenance_request(
+    id: int,
+    db: Session = Depends(get_db),
+):
+    request = db.query(MaintenanceRequest).filter(MaintenanceRequest.id == id).first()
+    
+    if request is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Request not found"
+        )
+    
+    db.delete(request)
+    db.commit()
+
+    return {
+        "success": True,
+        "message": f"Request {id} deleted successfully."
+    }
