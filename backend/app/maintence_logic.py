@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Depends
 from typing import List, Optional
-from .schemas import CreateMaintenanceRequest
+from schemas import CreateMaintenanceRequest
 from sqlalchemy.orm import Session
-from .db import SessionLocal
+from db import SessionLocal
 
 import os
 
-from .model import MaintenanceRequest
+from model import MaintenanceRequest
 
 
 router = APIRouter()
@@ -87,5 +87,5 @@ async def delete_maintenance_request(
 
     return {
         "success": True,
-        "message": f"Request {id} deleted successfully."
+        "message": f"Maintenance request {id} deleted successfully."
     }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { local } from "./App";
+import "./Admin.css";
 
 export default function MaintenanceForm() {
   const [techDescription, setTechDescription] = useState("");
@@ -13,17 +14,15 @@ export default function MaintenanceForm() {
   const [successMessage, setSuccessMessage] = useState("");
   const fetchRequests = async () => {
     setLoading(true);
-     try {
-    const response = await local.get("/requests");
-    setActiveRequests(response.data);
+    try {
+      const response = await local.get("/requests");
+      setActiveRequests(response.data);
     } catch (error) {
       console.error("Error fetching active requests:", error);
     } finally {
       setLoading(false);
     }
   };
-
-  
 
   const viewRequest = (request) => {
     setSelectedRequest(request);
@@ -44,21 +43,23 @@ export default function MaintenanceForm() {
       });
     }
     try {
-      await local.put(`/request/${selectedRequest.id}`, formData, { 
-        headers: { "Content-Type": "multipart/form-data" }});
-        setSuccessMessage("Request updated successfully!");
-        setTimeout(() => setSuccessMessage(""), 3000); // Clear message after 3 seconds
+      await local.put(`/request/${selectedRequest.id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      setSuccessMessage("Request updated successfully!");
+      setTimeout(() => setSuccessMessage(""), 3000);
       setSelectedRequest(null);
-      setFilters({ location: "", areaType: "", category: "", urgency: "", stage: "" }); // reset filters
+      setFilters({ location: "", areaType: "", category: "", urgency: "", stage: "" });
       fetchRequests();
-      } catch (error) {
-         console.error("Error updating request:", error);
-      }
-    
+    } catch (error) {
+      console.error("Error updating request:", error);
+    }
   };
-useEffect(() => {
+
+  useEffect(() => {
     fetchRequests();
   }, []);
+
   // ------------------------------------------------------------
   // Filters
   // ------------------------------------------------------------
@@ -87,11 +88,12 @@ useEffect(() => {
 
   return (
     <div className="form-container">
-      <h1>Maintenance Request Form</h1>
+      <h1>Maintenance Requests</h1>
 
       <div className="active-requests-container">
         <h2>Active Requests</h2>
         {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+
         {/* Filter controls */}
         <div className="filter-container">
           <select value={filters.location} onChange={(e) => handleFilterChange("location", e.target.value)}>
@@ -132,21 +134,15 @@ useEffect(() => {
           {filteredRequests.map((request) => (
             <div
               key={request.id}
-              className="active-request"
+              className={`active-request ${selectedRequest?.id === request.id ? "selected-request" : ""}`}
               onClick={() => viewRequest(request)}
-              style={{
-                cursor: "pointer",
-                border: selectedRequest?.id === request.id ? "2px solid blue" : "1px solid #ccc",
-                padding: "8px",
-                marginBottom: "6px"
-              }}
             >
-              <p><strong>ID:</strong> {request.id}</p>
-              <p><strong>Location:</strong> {request.location}</p>
-              <p><strong>Category:</strong> {request.category}</p>
-              <p><strong>Description:</strong> {request.description}</p>
-              <p><strong>Urgency:</strong> {request.urgency}</p>
-              <p><strong>Stage:</strong> {request.stage}</p>
+              <p><strong>Urgency:</strong> {request.urgency ?? "Empty"}</p>
+              <p><strong>Location:</strong> {request.location ?? "Empty"}</p>
+              <p><strong>Category:</strong> {request.category ?? "Empty"}</p>
+              <p className="description"><strong>Description:</strong> {request.description ?? "Empty"}</p>
+              <p><strong>Stage:</strong> {request.stage ?? "Empty"}</p>
+              <p><strong>ID:</strong> {request.id ?? "Empty"}</p>
             </div>
           ))}
         </div>

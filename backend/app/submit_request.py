@@ -3,9 +3,9 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 import os
 
-from .db import SessionLocal
-from .model import MaintenanceRequest
-from .schemas import SubmitResponse
+from db import SessionLocal
+from model import MaintenanceRequest
+from schemas import SubmitResponse
 
 router = APIRouter()
 

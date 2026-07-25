@@ -2,10 +2,10 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from .login import router as auth_router
-from .maintence_logic import router as maintenance_router
-from .submit_request import router as submit_router
-from .db import engine, Base
+from login import router as auth_router
+from maintence_logic import router as maintenance_router
+from submit_request import router as submit_router
+from db import engine, Base
 
 
 Base.metadata.create_all(bind=engine)

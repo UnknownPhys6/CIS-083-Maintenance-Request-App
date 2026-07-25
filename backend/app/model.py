@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, Date
-from .db import Base
+from db import Base
 
 class MaintenanceRequest(Base):
     __tablename__ =  "maintenance_requests"
