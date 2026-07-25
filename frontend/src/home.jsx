@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <div>
       <form onSubmit={getRequest}>
-        <h2>Campus Maintenance System</h2>
+        <h1>Campus Maintenance System</h1>
         <div className="maint-tag">
           <div className="maint-header">
             <label htmlFor="requestID">Enter request ID:</label>
