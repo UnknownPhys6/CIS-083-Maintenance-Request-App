@@ -3,7 +3,8 @@ import Login from "./Login";
 import MaintenanceForm from "./MaintenanceForm";
 import Admin from "./Admin";
 import {Link} from "react-router-dom";
-import Home from "./home"
+import Home from "./home";
+import Contacts from "./contacts";
 import axios from "axios"
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/MaintenanceForm" element={<MaintenanceForm />} />
         <Route path="/login" element={<Login />} /> 
-        <Route path="/maintenance" element={<Admin />} /> 
+        <Route path="/maintenance" element={<Admin />} />
+        <Route path="/contacts" element={<Contacts />} />
       </Routes>
     </Router>
   );
@@ -21,9 +23,10 @@ function App() {
 export function Navbar() {
   return (
     <nav className= "nav">
+      <Link to="/">Home</Link>
       <Link to="/MaintenanceForm">Submit Request</Link>
       <Link to="/login">Maintenance Login</Link>
-      <Link to="/">Home</Link>
+      <Link to="/contacts">Contacts</Link>
     </nav>
   );
 }
