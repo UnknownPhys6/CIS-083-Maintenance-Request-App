@@ -1,44 +1,46 @@
 :root {
-  --text: #000000;              
-  --text-h: #c90022;            
-  --bg: #FFFFFF;                
-  --border: #000000;            
-  --code-bg: #f7f7f7;           
-  --accent: #C90022;            
-  --accent-bg: rgba(201, 0, 34, 0.12); 
+  --text: #000;
+  --text-h: #c90022;
+  --bg: #fff;
+  --border: #000;
+  --code-bg: #f7f7f7;
+  --accent: #c90022;
+  --accent-bg: rgba(201, 0, 34, 0.12);
   --accent-border: rgba(201, 0, 34, 0.5);
-  --social-bg: rgba(0, 0, 0, 0.05); 
+  --social-bg: rgba(0, 0, 0, 0.05);
   --shadow:
     rgba(0, 0, 0, 0.15) 0 10px 15px -3px,
     rgba(0, 0, 0, 0.08) 0 4px 6px -2px;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: var(--sans);
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: light dark;
   color: var(--text);
   background: var(--bg);
+  color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
 
-  @media (max-width: 1024px) {
+@media (max-width: 1024px) {
+  :root {
     font-size: 16px;
   }
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    --text: #000000;
-    --text-h: #000000;
-    --bg: #ffffff;
-    --border: #C90022;
-    --code-bg: #111111;
-    --accent: #C90022;
+    --text: #fff;
+    --text-h: #fff;
+    --bg: #000;
+    --border: #c90022;
+    --code-bg: #111;
+    --accent: #c90022;
     --accent-bg: rgba(201, 0, 34, 0.25);
     --accent-border: rgba(201, 0, 34, 0.6);
     --social-bg: rgba(255, 255, 255, 0.1);
@@ -80,11 +82,12 @@ h1 {
   letter-spacing: -1.68px;
   margin: 32px 0;
 }
+
 h2 {
   font-size: 24px;
   line-height: 118%;
   letter-spacing: -0.24px;
-  margin: 0 0 8px;
+  margin-bottom: 8px;
 }
 
 p {
@@ -122,10 +125,7 @@ form {
 
 .form-group {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
-  text-align: left;
   gap: 15px;
 }
 
@@ -134,94 +134,83 @@ form {
   width: 70%;
   max-width: 350px;
   padding: 10px;
-  border: 1px solid var(--border); 
+  border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--bg);
   color: var(--text);
 }
 
-.urgency-container {
+.urgency-container,
+.stage-container {
   display: flex;
   justify-content: center;
   gap: 15px;
 }
 
-.urgency-option {
+.urgency-option,
+.stage-option {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.stage-option {
+  flex-direction: column;
+}
+
+input[type="radio"] {
+  transform: scale(1.3);
+  accent-color: var(--accent);
+  cursor: pointer;
 }
 
 .submit-btn {
   padding: 10px 20px;
   cursor: pointer;
   color: #fff;
+  background: var(--accent);
   border: none;
   border-radius: 6px;
   font-weight: 600;
+  margin: 15px auto;
 }
 
 .submit-btn:hover {
-  background: var(--accent);
-}
-
-.stage-container {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 10px;
-}
-
-.stage-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  color: var(--text);
-}
-
-.stage-option input[type="radio"] {
-  transform: scale(1.3);
-  cursor: pointer;
-}
-
-input[type="radio"]:checked {
-  accent-color: #C90022;
+  opacity: 0.85;
 }
 
 .nav a {
-  color: #f40606;          
+  color: var(--text);
   text-decoration: none;
   font-weight: 600;
   padding: 10px 16px;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .nav a:hover {
-  color: #1f0797;     
+  color: var(--accent);
 }
 
 @media (max-width: 600px) {
-
   #root {
-    width: 100%;            
-    padding: 0 10px;        
+    width: 100%;
+    padding: 0 10px;
   }
 
   .form-container {
-    padding: 15px;          
+    padding: 15px;
   }
 
   .form-group input,
   .form-group select {
-    width: 100%;            
-    max-width: 100%;        
+    width: 100%;
+    max-width: 100%;
   }
 
   h1 {
-    font-size: 32px;        
+    font-size: 32px;
     margin: 16px 0;
   }
 
@@ -231,7 +220,7 @@ input[type="radio"]:checked {
 
   .stage-container,
   .urgency-container {
-    flex-wrap: wrap;        
+    flex-wrap: wrap;
     gap: 20px;
   }
 }
@@ -245,58 +234,45 @@ input[type="radio"]:checked {
   border-radius: 8px;
 }
 
-.active-requests-container h2 {
-  margin-bottom: 12px;
-  color: var(--text-h);
-  font-weight: 700;
-}
-
 .active-requests-scroll {
   max-height: 300px;
+  max-width: 500px;
   overflow-y: auto;
-  border: 2px solid #C90022;
+  border: 2px solid var(--accent);
   padding: 15px;
   border-radius: 8px;
   background: #000;
   color: #fff;
   box-shadow: var(--shadow);
-}
-
-.active-requests-scroll p,
-.active-requests-scroll div {
-  padding: 8px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid var(--border);
-}
-
-.active-requests-scroll p:last-child,
-.active-requests-scroll div:last-child {
-  margin-bottom: 0;
-  border-bottom: none;
+  margin: 25px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
 }
 
 .active-request {
   background: #111;
   border: 1px solid #333;
   padding: 10px;
-  margin-bottom: 10px;
   border-radius: 6px;
 }
 
 .active-request[data-category] {
-  border-left: 4px solid #C90022;
+  border-left: 4px solid var(--accent);
   padding-left: 12px;
   max-height: 150px;
   overflow-y: auto;
 }
 
 .active-request:hover {
-  background: #C90022;
+  background: var(--accent);
   border-color: #fff;
 }
 
 .logo-container {
-  margin-top: 30px;
+  margin-top: 40px;
   width: 100%;
   height: 120px;
   background-image: url("./Images/Lake Land College logo.png");
@@ -305,5 +281,70 @@ input[type="radio"]:checked {
   background-size: contain;
   opacity: 0.9;
   transition: opacity 0.2s ease, transform 0.2s ease;
+  filter: drop-shadow(0 0 16px #ffffff);
 }
 
+.maint-tag {
+  border: 2px solid var(--border);
+  background: var(--bg);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.maint-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.maint-header label {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.maint-header input {
+  padding: 10px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.contacts-page {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.contacts-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.contact-card {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.contact-card:last-child {
+  border-bottom: none;
+}
+
+.contact-card p {
+  margin: 4px 0;
+  color: var(--text);
+}
+
+.contact-card strong {
+  color: var(--text-h);
+}
