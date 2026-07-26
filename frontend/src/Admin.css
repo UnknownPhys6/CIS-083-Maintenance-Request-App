@@ -75,3 +75,29 @@
     gap: 15px;
     flex-wrap: wrap;
 }
+
+.delete-btn {
+    margin-left: 10px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    background-color: #d9534f;
+    color: white;
+
+    transition: background-color 0.2s;
+}
+
+.delete-btn:hover {
+    background-color: #c9302c;
+}
+
+.delete-btn.confirm {
+    background-color: #ff9800;
+    color: black;
+}
+
+.delete-btn.confirm:hover {
+    background-color: #f57c00;
+}

@@ -12,6 +12,8 @@ export default function MaintenanceForm() {
   const [loading, setLoading] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const fetchRequests = async () => {
     setLoading(true);
     try {
@@ -28,6 +30,7 @@ export default function MaintenanceForm() {
     setSelectedRequest(request);
     setTechDescription(request.tech_description || "");
     setStage(request.stage || "Submitted");
+    setConfirmDelete(false);
   };
 
   const handleSubmit = async (e) => {
@@ -55,6 +58,36 @@ export default function MaintenanceForm() {
       console.error("Error updating request:", error);
     }
   };
+
+const handleDelete = async () => {
+  if (!selectedRequest) return;
+
+  // First click just asks for confirmation
+  if (!confirmDelete) {
+    setConfirmDelete(true);
+
+    // Reset after 5 seconds
+    setTimeout(() => {
+      setConfirmDelete(false);
+    }, 5000);
+
+    return;
+  }
+
+  try {
+    await local.delete(`/delete_maintenance_request/${selectedRequest.id}`);
+
+    setSuccessMessage("Request deleted successfully!");
+    setTimeout(() => setSuccessMessage(""), 3000);
+
+    setConfirmDelete(false);
+    setSelectedRequest(null);
+    fetchRequests();
+  } catch (error) {
+    console.error("Error deleting request:", error);
+    setConfirmDelete(false);
+  }
+};
 
   useEffect(() => {
     fetchRequests();
@@ -195,7 +228,18 @@ export default function MaintenanceForm() {
 
           <div className="form-group">
             <button type="submit" className="submit-btn">Alter Request</button>
-            <button type="button" onClick={() => setSelectedRequest(null)}>Cancel</button>
+            <button type="button" onClick={() => {
+              setSelectedRequest(null);
+              setConfirmDelete(false);
+              }}
+            >Cancel</button>
+            <button
+              type="button"
+              className={confirmDelete ? "delete-btn confirm" : "delete-btn"}
+              onClick={handleDelete}
+            >
+              {confirmDelete ? "Click Again to Confirm" : "Delete Request"}
+            </button>
           </div>
         </form>
       )}
