@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { local } from "./App";
-import "./Admin.css";
+import "./index.css";
 
 export default function MaintenanceForm() {
   const [techDescription, setTechDescription] = useState("");
