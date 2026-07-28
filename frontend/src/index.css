@@ -358,3 +358,9 @@ input[type="radio"] {
 .contact-card strong {
   color: var(--text-h);
 }
+.not-found-message {
+  color: black;
+  position: center;
+  font-weight: bold;
+  margin-top: 20px;
+}

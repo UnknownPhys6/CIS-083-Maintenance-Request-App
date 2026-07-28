@@ -5,6 +5,7 @@ export default function Home() {
   const [requestID, setRequestID] = useState("");
   const [activeRequests, setActiveRequests] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [notFoundMessage, setNotFoundMessage] = useState("");
 
   async function getRequest(e) {
     e.preventDefault();
@@ -14,6 +15,7 @@ export default function Home() {
       setActiveRequests([response.data]); 
     } catch (error) {
       console.error("Error fetching request details:", error);
+      setNotFoundMessage("Request not found.");
       setActiveRequests([]);
     } finally {
       setLoading(false);
@@ -46,7 +48,7 @@ export default function Home() {
 
       <div className="active-requests-scroll">
         {loading && <p>Loading...</p>}
-        {!loading && activeRequests.length === 0 && <p>No active requests found.</p>}
+        {!loading && activeRequests.length === 0 && notFoundMessage && <p className="not-found-message">{notFoundMessage}</p>}
 
         {activeRequests.map((request) => (
           <div key={request.id} className="active-request">
