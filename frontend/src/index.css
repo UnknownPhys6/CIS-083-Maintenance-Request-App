@@ -185,7 +185,7 @@ input[type="radio"] {
 }
 
 .submit-btn:hover {
-  filter: drop-shadow(0 0 5px var(--text-h));
+  filter: drop-shadow(0 0 5px var(--text));
   font-weight: 900;
   padding: 8px 15px;
 }
@@ -200,7 +200,7 @@ input[type="radio"] {
 
 .nav a:hover {
   color: var(--accent);
-  filter: drop-shadow(0 0 10px var(--text-h));
+  filter: drop-shadow(0 0 10px var(--text));
   font-weight: 900;
   text-shadow: 0 0 5px #fff;
 }
