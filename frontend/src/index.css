@@ -110,10 +110,12 @@ code {
 }
 
 .form-container {
-  max-width: 700px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 30px;
   text-align: center;
+  box-sizing: border-box;
 }
 
 form {
@@ -245,14 +247,13 @@ input[type="radio"] {
   color: var(--text);
   border-radius: 8px;
 
-  width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .active-requests-scroll {
   max-height: 400px;
-  max-width: 900px;
+  width: 100%;
 
   display: flex;
   flex-wrap: wrap;
@@ -267,6 +268,8 @@ input[type="radio"] {
   border-radius: 8px;
   background: var(--code-bg);
   box-shadow: var(--shadow);
+
+  box-sizing: border-box;
 }
 
 .active-request {
@@ -275,8 +278,8 @@ input[type="radio"] {
   padding: 10px;
   border-radius: 8px;
   color: var(--text);
-  max-width: 200px;
   width: 250px;
+  box-sizing: border-box;
   cursor: pointer;
   overflow: hidden; 
   transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
