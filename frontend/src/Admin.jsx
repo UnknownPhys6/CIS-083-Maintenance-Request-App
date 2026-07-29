@@ -52,7 +52,7 @@ export default function MaintenanceForm() {
       setSuccessMessage("Request updated successfully!");
       setTimeout(() => setSuccessMessage(""), 3000);
       setSelectedRequest(null);
-      setFilters({ location: "", areaType: "", category: "", urgency: "", stage: "" });
+      setFilters({ location: "", areaType: "", category: "", stage: "" });
       fetchRequests();
     } catch (error) {
       console.error("Error updating request:", error);
@@ -100,23 +100,32 @@ const handleDelete = async () => {
     location: "",
     areaType: "",
     category: "",
-    urgency: "",
     stage: ""
   });
+
+  const [urgencySort, setUrgencySort] = useState("desc");
 
   const handleFilterChange = (field, value) => {
     console.log("FILTER CHANGED:", field, value);
     setFilters((prev) => ({ ...prev, [field]: value }));
   };
 
-  const filteredRequests = activeRequests.filter((request) => {
+const filteredRequests = activeRequests
+  .filter((request) => {
     return (
       (filters.location === "" || request.location === filters.location) &&
       (filters.areaType === "" || request.area_type === filters.areaType) &&
       (filters.category === "" || request.category === filters.category) &&
-      (filters.urgency === "" || request.urgency === filters.urgency) &&
-      (filters.stage === "" ? request.stage !== "Completed" : request.stage === filters.stage)
+      (filters.stage === ""
+        ? request.stage !== "Completed"
+        : request.stage === filters.stage)
     );
+  })
+  .sort((a, b) => {
+    if (urgencySort === "asc") {
+      return Number(a.urgency) - Number(b.urgency);
+    }
+    return Number(b.urgency) - Number(a.urgency);
   });
 
   return (
@@ -143,11 +152,9 @@ const handleDelete = async () => {
             ))}
           </select>
 
-          <select value={filters.urgency} onChange={(e) => handleFilterChange("urgency", e.target.value)}>
-            <option value="">All Urgency</option>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <option key={n} value={n}>{n}</option>
-            ))}
+          <select value={urgencySort} onChange={(e) => setUrgencySort(e.target.value)}>
+            <option value="desc">Urgency: Highest First</option>
+            <option value="asc">Urgency: Lowest First</option>
           </select>
 
           <select value={filters.stage} onChange={(e) => handleFilterChange("stage", e.target.value)}>
