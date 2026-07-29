@@ -183,6 +183,19 @@ const filteredRequests = activeRequests
               <p className="description"><strong>Description:</strong> {request.description ?? "Empty"}</p>
               <p><strong>Stage:</strong> {request.stage ?? "Empty"}</p>
               <p><strong>ID:</strong> {request.id ?? "Empty"}</p>
+               {request.images && (
+          <div>
+            <strong>Photos:</strong>
+            {request.images.split(",").map((filename) => (
+            <img
+              key={filename}
+              src={`http://localhost:8000/uploads/${filename.trim()}`}
+               alt="Maintenance photo"
+              style={{ maxWidth: "200px", margin: "5px", display: "block" }}
+                            />
+            ))}
+          </div>
+)}
             </div>
           ))}
         </div>
