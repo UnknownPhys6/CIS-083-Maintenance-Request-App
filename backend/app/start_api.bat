@@ -1,4 +1,4 @@
-
+@echo off
 cd /d "%~dp0"
 
 echo Starting Maintenance Request Backend...
