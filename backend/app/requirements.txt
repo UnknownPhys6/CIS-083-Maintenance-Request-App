@@ -17,5 +17,5 @@ uvicorn==0.49.0
 sqlalchemy==2.0.51
 dotenv==0.9.9
 pymysql==1.0.3
-#added this one during testing on 7/21. Dont know if it needs to stay. Dylan can review.
 python-multipart==0.0.32
+passlib==1.7.4

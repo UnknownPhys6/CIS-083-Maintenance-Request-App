@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 import os
 
 from db import SessionLocal
-from model import MaintenanceRequest
-from schemas import SubmitResponse
+from schema import MaintenanceRequest
+from models import SubmitResponse
 
 router = APIRouter()
 
@@ -22,7 +22,7 @@ def get_db():
 
 
 # ------------------------------------------------------------
-# Duplicate Request Detection
+# Duplicate Request Detection WIP
 # ------------------------------------------------------------
 def is_similar(description: str, existing_descriptions: List[str]) -> bool:
     description_words = set(description.lower().split())

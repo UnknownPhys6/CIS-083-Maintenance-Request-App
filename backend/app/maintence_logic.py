@@ -1,12 +1,11 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Depends
 from typing import List, Optional
-from schemas import CreateMaintenanceRequest
+from models import CreateMaintenanceRequest
 from sqlalchemy.orm import Session
 from db import SessionLocal
-
+from login import require_auth
 import os
-
-from model import MaintenanceRequest
+from schema import MaintenanceRequest
 
 
 router = APIRouter()
@@ -38,6 +37,9 @@ async def save_tech_report(
     stage: str = Form(...),
     images: Optional[List[UploadFile]] = File(None),
     db: Session = Depends(get_db),
+
+    # if this line fails, the endpoint will automatically reject the request with error 401. user doesnt need to actually be used.
+    user=Depends(require_auth)
 ):
     request = db.query(MaintenanceRequest).filter(MaintenanceRequest.id == id).first()
     if request is None:
@@ -73,6 +75,9 @@ async def get_all_reports(db: Session = Depends(get_db)):
 async def delete_maintenance_request(
     id: int,
     db: Session = Depends(get_db),
+
+    # if this line fails, the endpoint will automatically reject the request with error 401. user doesnt need to actually be used.
+    user=Depends(require_auth)
 ):
     request = db.query(MaintenanceRequest).filter(MaintenanceRequest.id == id).first()
     

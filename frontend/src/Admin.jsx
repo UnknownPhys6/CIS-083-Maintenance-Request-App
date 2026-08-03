@@ -46,9 +46,7 @@ export default function MaintenanceForm() {
       });
     }
     try {
-      await local.put(`/request/${selectedRequest.id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
+      await local.put(`/request/${selectedRequest.id}`, formData, {headers: {token: localStorage.getItem("token")}});
       setSuccessMessage("Request updated successfully!");
       setTimeout(() => setSuccessMessage(""), 3000);
       setSelectedRequest(null);
@@ -75,7 +73,7 @@ const handleDelete = async () => {
   }
 
   try {
-    await local.delete(`/delete_maintenance_request/${selectedRequest.id}`);
+    await local.delete(`/delete_maintenance_request/${selectedRequest.id}`, {headers: {token: localStorage.getItem("token")}});
 
     setSuccessMessage("Request deleted successfully!");
     setTimeout(() => setSuccessMessage(""), 3000);
@@ -86,6 +84,29 @@ const handleDelete = async () => {
   } catch (error) {
     console.error("Error deleting request:", error);
     setConfirmDelete(false);
+  }
+};
+
+const handleLogout = async () => {
+  try {
+    await local.post(
+      "/auth/logout",
+      {},
+      {
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      }
+    );
+
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+
+  } catch (error) {
+    console.error("Logout failed:", error);
+
+    localStorage.removeItem("token");
+    window.location.href = "/login";
   }
 };
 
@@ -130,7 +151,12 @@ const filteredRequests = activeRequests
 
   return (
     <div className="form-container">
-      <h1>Maintenance Requests</h1>
+      <div className="admin-header">
+        <h1>Maintenance Requests</h1>
+        <button onClick={handleLogout} className="logout-btn">
+          Logout
+        </button>
+      </div>
 
       <div className="active-requests-container">
         <h2>Active Requests</h2>
