@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 import os
 
 from db import SessionLocal
-from schema import MaintenanceRequest
-from models import SubmitResponse
+from models import MaintenanceRequest
+from schema import SubmitResponse
 
 router = APIRouter()
 

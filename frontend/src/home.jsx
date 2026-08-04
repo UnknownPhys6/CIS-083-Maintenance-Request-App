@@ -53,7 +53,6 @@ export default function Home() {
         {activeRequests.map((request) => (
           <div key={request.id} className="active-request">
             <p><strong>Location:</strong> {request.location}</p>
-            <p><strong>Area Type:</strong> {request.area_type}</p>
             <p><strong>Category:</strong> {request.category}</p>
             <p><strong>Description:</strong> {request.description}</p>
             <p><strong>Urgency:</strong> {request.urgency}</p>

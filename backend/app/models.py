@@ -1,31 +1,20 @@
+
 from pydantic import BaseModel
-from typing import Optional
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey,Boolean
 from db import Base
 
-class CreateMaintenanceRequest(BaseModel):
-    id: int
-    location: str
-    category: str
-    description: str
-    urgency: str
-    stage: str
-    active: bool
-    tech_description: Optional[str] = None
-    images: Optional[str] = None
+class MaintenanceRequest(Base):
+    __tablename__ =  "maintenance_requests"
 
-class Config:
-        from_attributes = True
-
-
-class UpdateRequest(BaseModel):
-    tech_description: Optional[str] = None
-    stage: Optional[str] = None
-
-class SubmitResponse(BaseModel):
-    request_id: int
-    message: str
-
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    location = Column(String(255))
+    category = Column(String(100))
+    description = Column(String(1000))
+    urgency = Column(String(10))
+    stage = Column(String(50), default="Submitted")
+    active = Column(Boolean, default=True)
+    tech_description = Column(String(1000), nullable=True)
+    images = Column(String(1000), nullable=True)
 class User(Base):
     __tablename__ = "users"
 
