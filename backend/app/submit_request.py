@@ -29,7 +29,7 @@ def is_similar(description: str, existing_descriptions: List[str]) -> bool:
     for old in existing_descriptions:
         old_words = set(old.lower().split())
         overlap = description_words & old_words
-        if len(overlap) > 6:
+        if len(overlap) > 4:  # Threshold for similarity
             return True
     return False
 
